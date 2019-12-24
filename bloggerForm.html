@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <form action="" enctype="text/plain">
+                <label for="title">title</label><input type="text" id="title" oninput="printTitle()">
+                <label for="content">content</label><input type="textarea" id="content" oninput="printContent()">
+                <input type="button" id="botonPost">
+                <select name="original" id="original"></select>
+                <select name="traducido" id="traducido"></select>
+        </form>
+        <form action="">
+                <label for="titleT">title Translated</label><input type="text" id="titleT">
+                <label for="contentT">content Translated</label><input type="textarea" id="contentT">
+        </form>
+        <div id="blogs">
+
+        </div>
+        <script>
+            var apikey = 'AIzaSyB_qCla3aqrru4Y4n0UDrRr5xEOjHoXzc4';
+            const url = new URL(document.location);
+            const params = url.searchParams;
+            const idPost = params.get('id');
+
+
+        
+            //cambiar por ejemplo vetplus (object url)
+
+            console.log(idPost)
+
+
+            if (idPost==null){
+
+                document.querySelector('#botonPost').setAttribute('value','makePost');
+
+                document.querySelector('#botonPost').addEventListener('click',async function() {
+                    let paramsFetch = {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            'kind': 'blogger#post',
+                            'blog': { 'id': '6332784932555712614' }, 
+                            'title': document.querySelector('#title').value, 
+                            'content': document.querySelector('#content').value
+                        }),
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('accesToken'),
+                            'Content-Type': 'application/json'
+                        }
+    
+                    };
+                    await fetch('https://www.googleapis.com/blogger/v3/blogs/6332784932555712614/posts/', paramsFetch) .then(function(){
+                        window.location.replace("./index.html")
+                    });
+                })
+
+            }
+            else{
+
+                document.querySelector('#botonPost').setAttribute('value','updatePost');
+
+                let contadorPost = 0;
+                let listaPosts = fetch('https://www.googleapis.com/blogger/v3/blogs/6332784932555712614/posts/'+idPost+'?key=' + apikey, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                }).then(function (promiseJson) {
+                    return promiseJson.json();
+                }).then(function (responseJson) {
+
+                    document.querySelector('#title').value = responseJson.title;
+
+                    document.querySelector('#content').value = responseJson.content;
+                });
+
+
+            document.querySelector('#botonPost').addEventListener('click',async function() {
+                    let paramsFetch = {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                            'kind': 'blogger#post',
+                            'id': idPost,
+                            'blog': { 'id': '6332784932555712614' }, 
+                            'title': document.querySelector('#title').value, 
+                            'content': document.querySelector('#content').value
+                        }),
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('accesToken'),
+                            'Content-Type': 'application/json'
+                        }
+    
+                    };
+                    var updateaPost = await fetch('https://www.googleapis.com/blogger/v3/blogs/6332784932555712614/posts/'+idPost, paramsFetch).then(function(){
+                        window.location.replace("./index.html")
+                    });
+                }
+            )
+            }
+
+            async function translate(langO, langT, text){
+
+                let traduce = await fetch('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php',{
+                    method: 'POST',
+                    body: JSON.stringify({
+                        'MethodName': 'translate',
+                        'params': {
+                            'source': langO,
+                            'target': langT,
+                            'text': text
+                        }
+                    }),
+                    headers: new Headers({
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    })
+                })
+                return await traduce.json();
+
+            }
+
+            function getValuesToTranslate(){
+                let originalIndex = document.querySelector('#original').selectedIndex;
+                let originalOption = document.querySelector('#original').options;
+                
+                let translatedIndex = document.querySelector('#traducido').selectedIndex;
+                let translatedOption = document.querySelector('#traducido').options;
+
+                let lenguas = {
+                    origen: originalOption[originalIndex].value,
+                    destino: translatedOption[translatedIndex].value
+                }
+                return lenguas;
+            }
+
+            async function printTitle(){
+
+                let origen = getValuesToTranslate().origen;
+                let destino= getValuesToTranslate().destino;
+
+                let title = document.querySelector('#title').value;
+
+                document.querySelector('#titleT').value = await translate(origen, destino, title);
+                
+            }
+
+            async function printContent(){
+
+                let origen = getValuesToTranslate().origen;
+                let destino= getValuesToTranslate().destino;
+
+                let texto = document.querySelector('#content').value;
+
+                document.querySelector('#contentT').value = await translate(origen, destino, texto);
+                
+            }
+
+            function getLanguages(){
+                let idiomas = fetch('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php',{
+                    method: 'POST',
+                    body: JSON.stringify({
+                        MethodName: 'languages',
+                        params: ''
+                    })
+                }).then(function(idiomasJson){
+                    console.log(idiomasJson)
+                    return idiomasJson.json();
+                }).then(function(idiomas) {
+                    idiomas.forEach(idioma=>{
+                        let optionIdioma = document.createElement('option');
+                        let nameOption = optionIdioma.setAttribute('value',idioma.code)
+                        optionIdioma.text = idioma.name
+
+                        document.querySelector('#traducido').options.add(optionIdioma)
+                        
+                    })
+                    idiomas.forEach(idioma=>{
+                        let optionIdioma = document.createElement('option');
+                        let nameOption = optionIdioma.setAttribute('value',idioma.code)
+                        optionIdioma.text = idioma.name
+                        
+                        document.querySelector('#original').options.add(optionIdioma)
+                        
+                    })
+                })
+            }
+
+            getLanguages()
+
+        </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <form action="" enctype="text/plain">
+                <label for="title">title</label><input type="text" id="title" oninput="printTitle()">
+                <label for="content">content</label><input type="textarea" id="content" oninput="printContent()">
+                <input type="button" id="botonPost">
+                <select name="original" id="original"></select>
+                <select name="traducido" id="traducido"></select>
+        </form>
+        <form action="">
+                <label for="titleT">title Translated</label><input type="text" id="titleT">
+                <label for="contentT">content Translated</label><input type="textarea" id="contentT">
+        </form>
+        <div id="blogs">
+
+        </div>
+        <script type="module">
+            import {PostDao} from './js/dao/PostDao.js';
+            import {printTitle as titleImported, printContent as contentImported, getLanguages as languagesImported}   from './js/controller/PostFormController.js'
+
+            window.printTitle = function(){
+                titleImported();
+            }
+            window.printContent = function(){
+                contentImported();
+            }
+            window.getLanguages = function(){
+                languagesImported();
+            }
+
+
+            let postDao = new PostDao();
+
+            
+            var apikey = 'AIzaSyB_qCla3aqrru4Y4n0UDrRr5xEOjHoXzc4';
+            const url = new URL(document.location);
+            const params = url.searchParams;
+            const idPost = params.get('id');
+
+
+        
+            //cambiar por ejemplo vetplus (object url)
+
+            console.log(idPost)
+
+
+            if (idPost==null){
+
+                postDao.save();
+
+            }
+            else{
+
+                document.querySelector('#botonPost').setAttribute('value','updatePost');
+
+                let contadorPost = 0;
+                let listaPosts = fetch('https://www.googleapis.com/blogger/v3/blogs/6332784932555712614/posts/'+idPost+'?key=' + apikey, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                }).then(function (promiseJson) {
+                    return promiseJson.json();
+                }).then(function (responseJson) {
+
+                    document.querySelector('#title').value = responseJson.title;
+
+                    document.querySelector('#content').value = responseJson.content;
+                });
+
+                document.querySelector('#botonPost').addEventListener('click',async function() {
+                    let paramsFetch = {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                            'kind': 'blogger#post',
+                            'id': idPost,
+                            'blog': { 'id': '6332784932555712614' }, 
+                            'title': document.querySelector('#title').value, 
+                            'content': document.querySelector('#content').value
+                        }),
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('accesToken'),
+                            'Content-Type': 'application/json'
+                        }
+    
+                    };
+                    var updateaPost = await fetch('https://www.googleapis.com/blogger/v3/blogs/6332784932555712614/posts/'+idPost, paramsFetch).then(function(){
+                        window.location.replace("./index.html")
+                    });
+                }
+            )
+            }
+
+            getLanguages()
+
+        </script>
+</body>
+</html>
