@@ -1,10 +1,11 @@
 class Post{
 
-    constructor(idBlog,title,content,name){
-        this.idBlog = idBlog;
-        this.title = title;
-        this.content = content;
-        this.authName = name
+    idBlog;
+    title;
+    content;
+    authName;
+    
+    constructor(){
     }
     getIdBlog() {
         return this.idBlog;

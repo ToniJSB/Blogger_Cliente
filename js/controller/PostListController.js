@@ -1,15 +1,30 @@
 import {PostDao} from '../dao/PostDao.js';
 
 export  class PostListController{
+    postsTotales;
+    constructor(){
+        this.postsTotales = []
+    }
 
-    async  pintar(){
+    async pintar(){
         let postDao = new PostDao;
         let posts = await postDao.getAll();
         posts.forEach(post => {
+            this.postsTotales.push(post);
             this.postDOM(post);
         });
     }
-
+    searchByName(){
+        let valor = document.querySelector('#search').value;
+        let buscado = this.postsTotales.filter(function (contenido) {
+            return contenido.content.indexOf(valor) != -1 || contenido.content.indexOf(valor) != -1 || contenido.content.indexOf(valor) != -1;
+        });
+        console.log(buscado)
+        document.querySelector('#blogs').innerHTML = "";
+        buscado.forEach(post=>{
+            this.postDOM(post)
+        })
+    }
     postDOM(post){
         console.log(post)
     
@@ -64,6 +79,8 @@ export  class PostListController{
             articuloPost.appendChild(edit);
             articuloPost.appendChild(del);
             document.querySelector('#blogs').appendChild(articuloPost);
+
+
     
     }
     

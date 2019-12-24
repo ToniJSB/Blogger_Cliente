@@ -11,6 +11,9 @@
 </head>
 <body>
     <div id="init"></div>
+
+    <input type="text" name="searchByName" id="search" oninput="searchByName()" value="">
+
     <section id="blogs">
 
     </section>
@@ -21,10 +24,15 @@
         import {PostDao} from './js/dao/PostDao.js';
         import {PostListController} from './js/controller/PostListController.js';
 
+        let postListController = new PostListController;
+
         window.init = function(){
             initImport()
         }
-        let postListController = new PostListController;
+        window.searchByName = function(){
+            postListController.searchByName();
+        }
+
         let posts = new PostDao();
 
         postListController.pintar();
