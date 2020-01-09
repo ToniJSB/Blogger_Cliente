@@ -42,143 +42,19 @@
     </footer>
 
     <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
-    <script>
+    <script type="module">
+                import {revokeAllScopes} from './js/dao/Disconnect.js';
+                import {PostDao} from './js/dao/PostDao.js';
+                import {PostListController} from './js/controller/PostListController.js';
+        
+                let postListController = new PostListController;
 
-  
-
-        function getBlog() {
-            let contadorPost = 0;
-            let listaPosts = fetch('https://www.googleapis.com/blogger/v3/blogs/6332784932555712614/posts?key=' + apikey, {
-                method: 'GET',
-                headers: {
-                    
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            }).then(function (promiseJson) {
-                return promiseJson.json();
-            }).then(function (responseJson) {
-                let posts = responseJson.items;
-                posts.forEach(post => {
-                    let articuloPost = document.createElement('article');
-                    articuloPost.setAttribute('class','articlePost');
-
-                    let titulo = document.createElement('h2');
-                    let content = document.createElement('p');
-                    let autor = document.createElement('h3');
-                    let edit = document.createElement('button');
-                    edit.addEventListener('click',function(){                    
-                      window.location.href = "bloggerForm.html?id="+post.id;
-                    });
-                    let del = document.createElement('button');
-                    del.addEventListener('click',function (){
-                        fetch('https://www.googleapis.com/blogger/v3/blogs/6332784932555712614/posts/'+post.id, 
-                        {
-                            method: 'DELETE',
-                            headers: {
-                                'Authorization': 'Bearer ' + authToken,
-                            }
-                        })
-                        .then(function(){
-                            window.location.href = "index.html" ;
-                        });   
-                        }
-                    )
-                    titulo.setAttribute('class','titlePost');
-                    content.setAttribute('class','contentPost');
-                    autor.setAttribute('class','autorPost');
-                    console.log(post)
-                    
-                    let nodeTitulo = document.createTextNode(post.title);
-                    let nodeContent = document.createTextNode(post.content);
-                    let nodeAutor = document.createTextNode(post.author.displayName);
-                    let nodeEdit = document.createTextNode('Editar');
-                    let nodeDel = document.createTextNode('Eliminar');
-                    titulo.appendChild(nodeTitulo);
-                    content.appendChild(nodeContent)
-                    autor.appendChild(nodeAutor)
-                    edit.appendChild(nodeEdit)
-                    del.appendChild(nodeDel)
-
-                    articuloPost.appendChild(titulo);
-                    articuloPost.appendChild(content);
-                    articuloPost.appendChild(autor);
-                    articuloPost.appendChild(edit);
-                    articuloPost.appendChild(del);
-                    document.querySelector('#blogs').appendChild(articuloPost);
-                    postsTotales.push(post);
-                    
-                })
-                    
-            });
-
-        }
-
-        function searchByName(){
-            let valor = document.querySelector('#search').value;
-            let buscado = postsTotales.filter(function (contenido) {
-                return contenido.content.indexOf(valor) != -1 || contenido.content.indexOf(valor) != -1 || contenido.content.indexOf(valor) != -1;
-            });
-
-            document.querySelector('#blogs').innerHTML = ""
-            buscado.forEach(post=>{
-                let articuloPost = document.createElement('article');
-                articuloPost.setAttribute('class','articlePost');
-
-                let titulo = document.createElement('h2');
-                let content = document.createElement('p');
-                let autor = document.createElement('h3');
-                let edit = document.createElement('button');
-                edit.addEventListener('click',function(){                    
-                    window.location.href = "bloggerForm.html?id="+post.id;
-                });
-                let del = document.createElement('button');
-                del.addEventListener('click',function (){
-                    fetch('https://www.googleapis.com/blogger/v3/blogs/6332784932555712614/posts/'+post.id, 
-                    {
-                        method: 'DELETE',
-                        headers: {
-                            'Authorization': 'Bearer ' + authToken,
-                        }
-                    })
-                    .then(function(){
-                        window.location.href = "index.html" ;
-                    });   
-                    }
-                )
-                titulo.setAttribute('class','titlePost');
-                content.setAttribute('class','contentPost');
-                autor.setAttribute('class','autorPost');
-                console.log(post)
-                
-                let nodeTitulo = document.createTextNode(post.title);
-                let nodeContent = document.createTextNode(post.content);
-                let nodeAutor = document.createTextNode(post.author.displayName);
-                let nodeEdit = document.createTextNode('Editar');
-                let nodeDel = document.createTextNode('Eliminar');
-                titulo.appendChild(nodeTitulo);
-                content.appendChild(nodeContent)
-                autor.appendChild(nodeAutor)
-                edit.appendChild(nodeEdit)
-                del.appendChild(nodeDel)
-
-                articuloPost.appendChild(titulo);
-                articuloPost.appendChild(content);
-                articuloPost.appendChild(autor);
-                articuloPost.appendChild(edit);
-                articuloPost.appendChild(del);
-                document.querySelector('#blogs').appendChild(articuloPost);
-            })
-        }
-
-        function revokeAllScopes() {
-            auth.disconnect();
-        }
-
-
-
-        getBlog();
-
+                window.searchByName = function(){
+                    postListController.searchByName();
+                }
+        
+                postListController.pintar();
+        
 
     </script>
 </body>

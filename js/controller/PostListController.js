@@ -14,6 +14,7 @@ export  class PostListController{
             this.postDOM(post);
         });
     }
+
     searchByName(){
         let valor = document.querySelector('#search').value;
         let buscado = this.postsTotales.filter(function (contenido) {
@@ -22,9 +23,10 @@ export  class PostListController{
         console.log(buscado)
         document.querySelector('#blogs').innerHTML = "";
         buscado.forEach(post=>{
-            this.postDOM(post)
+            this.postDOM(post);
         })
     }
+    
     postDOM(post){
         console.log(post)
     
@@ -49,7 +51,7 @@ export  class PostListController{
                 {
                     method: 'DELETE',
                     headers: {
-                        'Authorization': 'Bearer ' + authToken,
+                        'Authorization': 'Bearer ' + localStorage.getItem('accesToken')
                     }
                 })
                 .then(function(){
@@ -79,10 +81,6 @@ export  class PostListController{
             articuloPost.appendChild(edit);
             articuloPost.appendChild(del);
             document.querySelector('#blogs').appendChild(articuloPost);
-
-
     
     }
-    
-
 }
