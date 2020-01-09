@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <meta name="google-signin-client_id"
+    content="157552515623-r8uv3qfugq1altl40mce9vuacmif4t90.apps.googleusercontent.com">
+</head>
+<body>
+    <div id="init"></div>
+    <a href="prueba.html"> Ver la lista de posts</a>
+    <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+    <script type="module">
+        import {init as initImport} from './js/dao/Connect.js';
+        window.init = function(){
+            initImport();
+        }
+
+    </script>
+    
+</body>
+</html>
