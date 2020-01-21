@@ -7,45 +7,45 @@
     <title>Document</title>
 </head>
 <body>
-        <form action="" enctype="text/plain">
-                <label for="title">title</label><input type="text" id="title" oninput="printTitle()">
-                <label for="content">content</label><input type="textarea" id="content" oninput="printContent()">
-                <input type="button" id="botonPost">
-                <select name="original" id="original"></select>
-                <select name="traducido" id="traducido"></select>
-        </form>
-        <form action="">
-                <label for="titleT">title Translated</label><input type="text" id="titleT">
-                <label for="contentT">content Translated</label><input type="textarea" id="contentT">
-        </form>
-        <div id="blogs">
+    <form action="" enctype="text/plain">
+        <label for="title">title</label><input type="text" id="title" oninput="printTitle()">
+        <label for="content">content</label><input type="textarea" id="content" oninput="printContent()">
+        <input type="button" id="botonPost">
+        <select name="original" id="original"></select>
+        <select name="traducido" id="traducido"></select>
+    </form>
+    <form action="">
+        <label for="titleT">title Translated</label><input type="text" id="titleT">
+        <label for="contentT">content Translated</label><input type="textarea" id="contentT">
+    </form>
+    <div id="blogs">
 
-        </div>
-        <script type="module">
-            import {PostDao} from './js/dao/PostDao.js';
-            import {PostFormController} from './js/controller/PostFormController.js';
+    </div>
+    <script type="module">
+        import {PostDao} from './js/dao/PostDao.js';
+        import {PostFormController} from './js/controller/PostFormController.js';
 
-            const url = new URL(document.location);
-            const params = url.searchParams;
-            const idPost = params.get('id');
-            
-            let postFormController = new PostFormController(idPost);
-
-
-            window.printTitle = function(){
-                postFormController.printTitle();
-            }
-            window.printContent = function(){
-                postFormController.printContent();
-            }
-            window.getLanguages = function(){
-                postFormController.getLanguages();
-            }
-            getLanguages();
-
-            let postDao = new PostDao();
+        const url = new URL(document.location);
+        const params = url.searchParams;
+        const idPost = params.get('id');
+        
+        let postFormController = new PostFormController(idPost);
 
 
-        </script>
+        window.printTitle = function(){
+            postFormController.printTitle();
+        }
+        window.printContent = function(){
+            postFormController.printContent();
+        }
+        window.getLanguages = function(){
+            postFormController.getLanguages();
+        }
+        getLanguages();
+
+        let postDao = new PostDao();
+
+
+    </script>
 </body>
 </html>

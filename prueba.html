@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+
+    header {
+        height: 70px;
+    }
+
+    .main-controls {
+        padding-bottom: 0.7rem;
+        height: 170px;
+    }
+    label {
+        font-family: 'NotoColorEmoji';
+        font-size: 3rem;
+        position: absolute;
+        top: 2px;
+        right: 3px;
+        z-index: 5;
+        cursor: pointer;
+    }
+    input[type=checkbox] {
+        position: absolute;
+        top: -100px;
+    }
+
+    aside {
+        position: fixed;
+        top: 0;
+        left: 0;
+        text-shadow: 1px 1px 1px black;  
+        width: 100%;
+        height: 100%;
+        transform: translateX(100%);
+        transition: 0.6s all;
+        background-color: #999;
+        background-image: linear-gradient(to top right, rgba(0,0,0,0), rgba(0,0,0,0.5));
+    }
+
+    input[type=checkbox]:checked ~ aside {
+        transform: translateX(0);
+    }
+ 
+    </style>
+    </head>
+    <body>
+
+
+        <header>
+            <h1>Web dictaphone</h1>
+          </header>
+    
+          <section class="main-controls">
+            <canvas class="visualizer" height="60px"></canvas>
+            <div id="buttons">
+              <button class="record">Record</button>
+              <button class="stop">Stop</button>
+            </div>
+          </section>
+    
+          <section class="sound-clips">
+    
+    
+          </section>
+    
+        </div>
+    
+        <label for="toggle">❔</label>
+        <input type="checkbox" id="toggle">
+        <aside>
+          <h2>Information</h2>
+    
+          <p>Web dictaphone is built using <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getUserMedia">getUserMedia</a> and the <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder_API">MediaRecorder API</a>, which provides an easier way to capture Media streams.</p>
+    
+          <p>Icon courtesy of <a href="http://findicons.com/search/microphone">Find Icons</a>. Thanks to <a href="http://soledadpenades.com/">Sole</a> for the Oscilloscope code!</p>  
+        </aside>
+    
+
+    <script type="module">
+
+        import {record, stop, mainSection} from './js/service/AudioService.js';
+
+        window.record = function(){
+            record;
+        }
+        window.stop = function(){
+            stop;
+        }
+        window.mainSection = function(){
+            mainSection;
+        }
+        
+    </script>
+    </body>
+</html>

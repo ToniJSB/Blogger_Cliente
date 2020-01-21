@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"></script>
+
+
+    <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+        <label for="peso">Peso</label><input id="peso" name="peso" type="number">
+        <label for="altura">Altura en Cm</label><input id="altura" name="altura" type="number">
+        <label for="edad">edad</label><input id="edad" name="edad" type="number">
+        <label for="sexo">sexo</label><select name="sexo" id="sexo">
+            <option value="M">Mujer</option>
+            <option value="H">Hombre</option>
+        </select>
+        <label for="actividad">actividad</label><div id='dropeable' name='actividad' ondrop='drop(event)' ondragover="allowDrop(event)" style="border: 5px black solid; height: 25px; max-width: 140px;"></div>
+        
+    </form>
+        <div id="tmb"> </div>
+
+        <div id="poco" draggable="true" ondragstart="drag(event)"><p>poco o ninguno</p></div>
+        <div id="leve" draggable="true" ondragstart="drag(event)"><p>ejercicio leve (1-3 días por semana)</p></div>
+        <div id="moderado" draggable="true" ondragstart="drag(event)"><p>ejercicio moderado (3-5 días por semana)</p></div>
+        <div id="fuerte" draggable="true" ondragstart="drag(event)"><p>ejercicio fuerte (6 días por semana)</p></div>
+        <div id="profesional" draggable="true" ondragstart="drag(event)"><p>ejercicio profesional o extremo</p></div>
+
+        <h3 id="closeVideo">closeVideo</h3>
+        <div id="video"></div>
+    <script type="module">
+        import {CalculadoraController} from './js/controller/CalculadoraController.js';
+
+        import {setup as setupImport, preload as preloadImport, closeVideo} from './js/controller/CameraController.js';
+
+        
+        let calculadoraController = new CalculadoraController();
+        
+        window.setup = function(){
+            setupImport();
+        }
+        window.preload = function(){
+            preloadImport();
+        }
+
+        document.querySelector('#closeVideo').addEventListener('click',function(){
+            console.log("hey")
+            closeVideo();
+        });
+
+        window.drag = function(ev){
+            calculadoraController.drag(ev);
+        }
+        window.allowDrop = function(ev){
+            calculadoraController.allowDrop(ev);
+        }
+        window.drop = function(ev){
+            calculadoraController.drop(ev);
+        }
+
+
+    </script>
+</body>
+</html>
