@@ -14,6 +14,14 @@
         <select name="original" id="original"></select>
         <select name="traducido" id="traducido"></select>
     </form>
+    <section class="main-controls">
+        <canvas class="visualizer" height="60px"></canvas>
+        <div id="buttons">
+          <button class="record">Record</button>
+          <button class="stop">Stop</button>
+        </div>
+      </section>
+
     <form action="">
         <label for="titleT">title Translated</label><input type="text" id="titleT">
         <label for="contentT">content Translated</label><input type="textarea" id="contentT">
@@ -24,6 +32,7 @@
     <script type="module">
         import {PostDao} from './js/dao/PostDao.js';
         import {PostFormController} from './js/controller/PostFormController.js';
+        import {record, stop, mainSection} from './js/controller/AudioController.js';
 
         const url = new URL(document.location);
         const params = url.searchParams;
@@ -31,6 +40,15 @@
         
         let postFormController = new PostFormController(idPost);
 
+        window.record = function(){
+            record;
+        }
+        window.stop = function(){
+            stop;
+        }
+        window.mainSection = function(){
+            mainSection;
+        }
 
         window.printTitle = function(){
             postFormController.printTitle();
@@ -38,12 +56,13 @@
         window.printContent = function(){
             postFormController.printContent();
         }
+    
+            
+
         window.getLanguages = function(){
             postFormController.getLanguages();
         }
         getLanguages();
-
-        let postDao = new PostDao();
 
 
     </script>

@@ -1,8 +1,13 @@
 import {PostDao} from '../dao/PostDao.js';
+import {getTranscript} from '../service/AudioService.js';
+import {TranslateService} from '../service/TranslateService.js';
+
 
 export class PostFormController{
 
     postDao = new PostDao();
+    translateService = new TranslateService();
+    
 
 
     constructor(id){
@@ -21,39 +26,20 @@ export class PostFormController{
         document.querySelector('#title').value = promesa.title;
         document.querySelector('#content').value = promesa.content;
     }
-    async translate(langO, langT, text){
-    
-        let traduce = await fetch('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php',{
-            method: 'POST',
-            body: JSON.stringify({
-                'MethodName': 'translate',
-                'params': {
-                    'source': langO,
-                    'target': langT,
-                    'text': text
-                }
-            }),
-            headers: new Headers({
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            })
-        })
-        return await traduce.json();
-    
-    }
-    
+
     getValuesToTranslate(){
         let originalIndex = document.querySelector('#original').selectedIndex;
         let originalOption = document.querySelector('#original').options;
         
         let translatedIndex = document.querySelector('#traducido').selectedIndex;
         let translatedOption = document.querySelector('#traducido').options;
-    
         let lenguas = {
             origen: originalOption[originalIndex].value,
             destino: translatedOption[translatedIndex].value
         }
         return lenguas;
     }
+
     
     async printTitle(){
         let values = this.getValuesToTranslate();
@@ -63,10 +49,9 @@ export class PostFormController{
     
         let title = document.querySelector('#title').value;
     
-        document.querySelector('#titleT').value = await this.translate(origen, destino, title);
+        document.querySelector('#titleT').value = await this.translateService.translate(origen, destino, title);
         
     }
-    
     async printContent(){
     
         let values = this.getValuesToTranslate();
@@ -76,35 +61,26 @@ export class PostFormController{
         
         let texto = document.querySelector('#content').value;
     
-        document.querySelector('#contentT').value = await this.translate(origen, destino, texto);
+        document.querySelector('#contentT').value = await this.translateService.translate(origen, destino, texto);
         
     }
-    
-    getLanguages(){
-        let idiomas = fetch('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php',{
-            method: 'POST',
-            body: JSON.stringify({
-                MethodName: 'languages',
-                params: ''
-            })
-        }).then(function(idiomasJson){
-            console.log(idiomasJson)
-            return idiomasJson.json();
-        }).then(function(idiomas) {
-            idiomas.forEach(idioma=>{
-                let optionIdioma = document.createElement('option');
-                let nameOption = optionIdioma.setAttribute('value',idioma.code);
-                optionIdioma.text = idioma.name;
-                document.querySelector('#traducido').options.add(optionIdioma);
-            })
-            idiomas.forEach(idioma=>{
-                let optionIdioma = document.createElement('option');
-                let nameOption = optionIdioma.setAttribute('value',idioma.code);
-                optionIdioma.text = idioma.name;
-                
-                document.querySelector('#original').options.add(optionIdioma);
-                
-            })
+    async getLanguages(){
+        let idiomas = await this.translateService.getLanguages();
+        idiomas.forEach(idioma=>{
+            let optionIdioma = document.createElement('option');
+            optionIdioma.setAttribute('value',idioma.code);
+            optionIdioma.text = idioma.name;
+            document.querySelector('#traducido').options.add(optionIdioma);
         })
+        idiomas.forEach(idioma=>{
+            let optionIdioma = document.createElement('option');
+            optionIdioma.setAttribute('value',idioma.code);
+            optionIdioma.text = idioma.name;
+            
+            document.querySelector('#original').options.add(optionIdioma);
+            
+        })
+
     }
+
 }
