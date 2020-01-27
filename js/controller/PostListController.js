@@ -4,6 +4,7 @@ export  class PostListController{
     postsTotales;
     constructor(){
         this.postsTotales = []
+        document.querySelector('#userName').innerHTML += localStorage.getItem('userName')
     }
 
     async pintar(){
@@ -20,7 +21,6 @@ export  class PostListController{
         let buscado = this.postsTotales.filter(function (contenido) {
             return contenido.content.indexOf(valor) != -1 || contenido.content.indexOf(valor) != -1 || contenido.content.indexOf(valor) != -1;
         });
-        console.log(buscado)
         document.querySelector('#blogs').innerHTML = "";
         buscado.forEach(post=>{
             this.postDOM(post);
@@ -28,7 +28,7 @@ export  class PostListController{
     }
     
     postDOM(post){
-        console.log(post)
+
     
             let valorTitulo = post.getTitle();
             let valorContent =  post.getContent();

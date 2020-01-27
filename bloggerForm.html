@@ -30,9 +30,8 @@
 
     </div>
     <script type="module">
-        import {PostDao} from './js/dao/PostDao.js';
         import {PostFormController} from './js/controller/PostFormController.js';
-        import {record, stop, mainSection} from './js/controller/AudioController.js';
+        import {stop, record, mainSection} from './js/controller/AudioController.js';
 
         const url = new URL(document.location);
         const params = url.searchParams;
@@ -41,7 +40,7 @@
         let postFormController = new PostFormController(idPost);
 
         window.record = function(){
-            record;
+            audiorecord;
         }
         window.stop = function(){
             stop;

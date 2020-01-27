@@ -1,5 +1,5 @@
 
-import {addFood} from './FoodController.js';
+import {FoodService} from '../service/FoodService.js';
 
 
 
@@ -12,6 +12,9 @@ let video;
 // Two variable to hold the label and confidence of the result
 let label;
 let confidence;
+let anadirComida;
+
+let foodService = new FoodService();
 
 export function preload() {
   // Create a camera input
@@ -31,6 +34,7 @@ export function setup() {
   // Create a 'label' and 'confidence' div to hold results
   label = createDiv('Label: ...');
   confidence = createDiv('Confidence: ...');
+  anadirComida = createDiv('Comida añadida: ...');
 
   classifyVideo();
 }
@@ -41,7 +45,7 @@ function classifyVideo() {
 }
 
 // A function to run when we get any errors and the results
-function gotResult(error, results) {
+async function gotResult(error, results) {
   // Display error in the console
   if (error) {
     console.error(error);
@@ -59,7 +63,9 @@ function gotResult(error, results) {
             label.html('Label: ' + results[0].label);
             confidence.html('Confidence: ' + nf(results[0].confidence));
 
-            addFood(results[0].label);
+            if (await foodService.addFood(results[0].label)){
+              anadirComida.html('Has añadido a la base de datos: ')
+            }
             //console.log(await buscar(results[0].label) );
         }
 

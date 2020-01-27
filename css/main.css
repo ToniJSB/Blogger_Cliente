@@ -2,12 +2,39 @@
     margin:0;
     padding: 0;
 }
-
+header{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    padding: 2%;
+}
+#title{
+    display: flex;
+}
+#logged{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#userName{
+    display: flex;
+}
+main{
+    display: flex;
+    flex-direction: column;
+}
+#form{
+    display: flex;
+    justify-content: space-between;
+    padding: 3%;
+}
 #blogs{
     display: flex;
     align-content: center;
     flex-direction: column;
+    padding: 3%;
 }
 .articlePost{
+    padding: 2%;
 
 }

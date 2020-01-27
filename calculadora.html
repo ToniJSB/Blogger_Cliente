@@ -38,7 +38,7 @@
     <script type="module">
         import {CalculadoraController} from './js/controller/CalculadoraController.js';
 
-        import {setup as setupImport, preload as preloadImport, closeVideo} from './js/controller/CameraController.js';
+        import {setup as setupImport, preload as preloadImport} from './js/controller/CameraController.js';
 
         
         let calculadoraController = new CalculadoraController();
@@ -49,11 +49,6 @@
         window.preload = function(){
             preloadImport();
         }
-
-        document.querySelector('#closeVideo').addEventListener('click',function(){
-            console.log("hey")
-            closeVideo();
-        });
 
         window.drag = function(ev){
             calculadoraController.drag(ev);

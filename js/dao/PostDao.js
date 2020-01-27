@@ -5,7 +5,7 @@ export class PostDao{
 
     }
     get(idPost){
-        let contadorPost = 0;
+        
         let postGetted = fetch('https://www.googleapis.com/blogger/v3/blogs/6332784932555712614/posts/'+idPost+'?access_token=' + localStorage.getItem('accesToken'), {
             method: 'GET',
             headers: {
@@ -40,7 +40,7 @@ export class PostDao{
         })
 
         let responseJson = await promiseJson.json();
-        console.log(await responseJson);
+        
         let posts = await responseJson.items;
         posts.forEach(post => {
             let postOobject = new Post();
@@ -52,7 +52,7 @@ export class PostDao{
             arrayPromises.push(postOobject);
 
         })
-        console.log(arrayPromises)
+
         return arrayPromises;
     }
 
@@ -68,7 +68,7 @@ export class PostDao{
                     'kind': 'blogger#post',
                     'blog': { 'id': '6332784932555712614' }, 
                     'title': document.querySelector('#titleT').value, 
-                    'content': document.querySelector('#contentT').value
+                    'content': document.querySelector('#contentT').value,
                 }),
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accesToken'),
@@ -83,7 +83,7 @@ export class PostDao{
 
     }
     async update(idPost){
-
+        
         document.querySelector('#botonPost').value = "update";
         document.querySelector('#botonPost').addEventListener('click',async function() {
             let paramsFetch = {
@@ -92,7 +92,8 @@ export class PostDao{
                     'kind': 'blogger#post',
                     'blog': { 'id': '6332784932555712614' }, 
                     'title': document.querySelector('#titleT').value, 
-                    'content': document.querySelector('#contentT').value
+                    'content': document.querySelector('#contentT').value,
+
                 }),
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accesToken'),
@@ -104,4 +105,18 @@ export class PostDao{
             });
         })
     }
+    async getValuesToTranslate(){
+        let originalIndex = document.querySelector('#original').selectedIndex;
+        let originalOption = document.querySelector('#original').options;
+        
+        let translatedIndex = document.querySelector('#traducido').selectedIndex;
+        let translatedOption = document.querySelector('#traducido').options;
+    
+        let lenguas = {
+            origen: originalOption[originalIndex].value,
+            destino: translatedOption[translatedIndex].value
+        }
+        return lenguas;
+    }
+
 }

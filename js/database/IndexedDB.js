@@ -1,6 +1,8 @@
 const dbPromise = indexedDB.open('food',1);
-var comidas;
+
 var fruits;
+
+
 dbPromise.onupgradeneeded = async function (event){ 
     const dataBase = event.target.result;
 
@@ -8,21 +10,37 @@ dbPromise.onupgradeneeded = async function (event){
 
 }
 
+
 export async function setFood(food){
     let db = dbPromise.result;
     const transaction = db.transaction(['fruit'], 'readwrite');
     const fruit =  transaction.objectStore('fruit');
+    let valide = true;
      
-    console.log('setting')
-    console.log(food)
-    fruit.add({
-        name: food.name,
-        nutrients: food.nutrients
+    let fruitRequest = fruit.getAll();
+    
+    fruitRequest.onsuccess = function(e){
+        fruits = e.target.result;
+    };
+
+    await fruits.forEach(mineFood => {
+        if( mineFood.name.toUpperCase() === food.name.toUpperCase()){
+            valide = false;
+        }
     });
 
+    if (valide){
+        fruit.add({
+            name: food.name,
+            nutrients: food.nutrients
+        });
+        return true
+    }
+    else{
+        console.log('ya existe')
+    }
+
 }
-
-
 
 
 dbPromise.onsuccess = function(){
@@ -53,15 +71,11 @@ export function validate(recibedFood){
         fruits = e.target.result;
     };
 
-
-        fruits.forEach(mineFood => {
+    fruits.forEach(mineFood => {
+        if( mineFood.name.toUpperCase() === recibedFood.toUpperCase()){
+            valide = false;
+        }
+    });
     
-            if( mineFood.name.toUpperCase() === recibedFood.toUpperCase()){
-                valide = false;
-            }
-        });
-    
-
-
     return valide;
 }

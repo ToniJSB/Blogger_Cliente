@@ -14,24 +14,25 @@
 
 <body>
 
-
-    <div class="">
-        Blogger de cocina
-    </div>
-
-        <div  id='init'></div>
-        <button class="col-1" name="revokeAllScopes" onclick="revokeAllScopes()">Disconnect</button>
+    <header>
+        <div id="title">
+            <h1>Blogger de cocina</h1>
+        </div>
+        <div id="logged">
+            <h3 id="userName">connected by: </h3>
+            <button id="disconnect" name="revokeAllScopes" onclick="revokeAllScopes()">Disconnect</button>
+        </div>
+    </header>
 
     
 
     <main>
-        <div id="pruebas">
 
+        <div id="form">
+            <div><label for="searchByName">Buscar por contenido</label><input type="text" name="searchByName" id="search" oninput="searchByName()" value=""></div>
+            
+            <a href="./bloggerForm.html">crear otro blog</a>
         </div>
-        
-        <input type="text" name="searchByName" id="search" oninput="searchByName()" value="">
-        
-        <a href="./bloggerForm.html">crear otro blog</a>
         
         <section id="blogs">
 
