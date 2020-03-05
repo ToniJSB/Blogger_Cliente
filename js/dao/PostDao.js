@@ -15,7 +15,7 @@ export class PostDao{
         }).then(function (promiseJson) {
             return promiseJson.json();
         }).then(function (responseJson) {
-
+            console.log(responseJson)
             let response = {
                 title: responseJson.title,
                 content: responseJson.content
@@ -56,19 +56,14 @@ export class PostDao{
         return arrayPromises;
     }
 
-    async save(){
-        
-        document.querySelector('#botonPost').value = "save";
-
-
-        document.querySelector('#botonPost').addEventListener('click',async function() {
+    async save(translates){
             let paramsFetch = {
                 method: 'POST',
                 body: JSON.stringify({
                     'kind': 'blogger#post',
-                    'blog': { 'id': '6332784932555712614' }, 
                     'title': document.querySelector('#titleT').value, 
                     'content': document.querySelector('#contentT').value,
+                    'labels': translates
                 }),
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accesToken'),
@@ -76,47 +71,34 @@ export class PostDao{
                 }
 
             };
-            await fetch('https://www.googleapis.com/blogger/v3/blogs/6332784932555712614/posts/', paramsFetch) .then(function(){
+            await fetch('https://www.googleapis.com/blogger/v3/blogs/6332784932555712614/posts/', paramsFetch).then(function(){
                 window.location.replace("./index.html")
             });
-        })
 
     }
-    async update(idPost){
+    async update(idPost, translates){
         
-        document.querySelector('#botonPost').value = "update";
-        document.querySelector('#botonPost').addEventListener('click',async function() {
-            let paramsFetch = {
-                method: 'PUT',
-                body: JSON.stringify({
-                    'kind': 'blogger#post',
-                    'blog': { 'id': '6332784932555712614' }, 
-                    'title': document.querySelector('#titleT').value, 
-                    'content': document.querySelector('#contentT').value,
+        let paramsFetch = {
+            method: 'PUT',
+            body: JSON.stringify({
+                'kind': 'blogger#post',
+                'title': document.querySelector('#titleT').value, 
+                'content': document.querySelector('#contentT').value,
+                'labels': translates
 
-                }),
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('accesToken'),
-                    'Content-Type': 'application/json'
-                }
-            };
-            await fetch('https://www.googleapis.com/blogger/v3/blogs/6332784932555712614/posts/'+idPost, paramsFetch) .then(function(){
-                window.location.replace("./index.html")
-            });
-        })
-    }
-    async getValuesToTranslate(){
-        let originalIndex = document.querySelector('#original').selectedIndex;
-        let originalOption = document.querySelector('#original').options;
-        
-        let translatedIndex = document.querySelector('#traducido').selectedIndex;
-        let translatedOption = document.querySelector('#traducido').options;
+            }),
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('accesToken'),
+                'Content-Type': 'application/json'
+            }
+        };
+        await fetch('https://www.googleapis.com/blogger/v3/blogs/6332784932555712614/posts/'+idPost, paramsFetch) .then(function(){
+            window.location.replace("./index.html")
+        });
     
-        let lenguas = {
-            origen: originalOption[originalIndex].value,
-            destino: translatedOption[translatedIndex].value
-        }
-        return lenguas;
     }
+
+
+
 
 }

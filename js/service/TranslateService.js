@@ -1,5 +1,8 @@
 export class TranslateService{
 
+    constructor(){
+
+    }
     
     async translate(langO, langT, text){
     
@@ -14,11 +17,11 @@ export class TranslateService{
                 }
             }),
             headers: new Headers({
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                'Content-Type': 'application/x-www-form-urlencoded'
             })
         })
-
-        return await traduce.json();
+        let traducido = await traduce.json();
+        return traducido;
     
     }
     
@@ -26,8 +29,8 @@ export class TranslateService{
         let idiomas = fetch('http://server247.cfgs.esliceu.net/bloggeri18n/blogger.php',{
             method: 'POST',
             body: JSON.stringify({
-                MethodName: 'languages',
-                params: ''
+                'MethodName': 'languages',
+                'params': ''
             })
         })
         let idiomasJson= (await idiomas).json();

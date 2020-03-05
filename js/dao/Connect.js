@@ -35,14 +35,13 @@ function renderButton() {
 
 var onSuccess = function (user) {
         
-    console.log('Signed in as ' + user.getBasicProfile().getName());
     localStorage.setItem('userName', user.getBasicProfile().getName())
-    localStorage.setItem('accesToken', user.Zi.access_token);
+    localStorage.setItem('accesToken', user.uc.access_token);
 };
 
 /**
 * Handle sign-in failures.
 */
 var onFailure = function (error) {
-    console.log(error);
+    console.log(error + "1");
 };

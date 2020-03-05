@@ -42,9 +42,7 @@ export async function setFood(food){
 
 }
 
-
-dbPromise.onsuccess = function(){
-
+export function getAll(){
     let db = dbPromise.result;
     const transaction = db.transaction(['fruit'], 'readonly');
     const fruit =  transaction.objectStore('fruit');
@@ -55,8 +53,9 @@ dbPromise.onsuccess = function(){
         fruits = e.target.result;
     };
 
-    
+
 }
+
 
 export function validate(recibedFood){
 
@@ -65,12 +64,7 @@ export function validate(recibedFood){
     const transaction = db.transaction(['fruit'], 'readonly');
     const fruit =  transaction.objectStore('fruit');
 
-    let fruitRequest = fruit.getAll();
-    
-    fruitRequest.onsuccess = function(e){
-        fruits = e.target.result;
-    };
-
+    getAll();
     fruits.forEach(mineFood => {
         if( mineFood.name.toUpperCase() === recibedFood.toUpperCase()){
             valide = false;

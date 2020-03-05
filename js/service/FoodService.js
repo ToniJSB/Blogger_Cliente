@@ -3,8 +3,7 @@ import {FoodDao} from '../dao/FoodDao.js';
 
 
 export class FoodService{
-    foodDao;
-
+    
     constructor(){
         this.foodDao = new FoodDao;
     }

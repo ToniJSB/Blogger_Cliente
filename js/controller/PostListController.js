@@ -1,7 +1,7 @@
 import {PostDao} from '../dao/PostDao.js';
 
 export  class PostListController{
-    postsTotales;
+    
     constructor(){
         this.postsTotales = []
         document.querySelector('#userName').innerHTML += localStorage.getItem('userName')

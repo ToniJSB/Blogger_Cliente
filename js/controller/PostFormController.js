@@ -1,48 +1,33 @@
-import {PostDao} from '../dao/PostDao.js';
-import {getTranscript} from '../service/AudioService.js';
+import {PostService} from '../service/PostService.js';
 import {TranslateService} from '../service/TranslateService.js';
 
 
 export class PostFormController{
 
-    postDao = new PostDao();
-    translateService = new TranslateService();
     
-
-
     constructor(id){
+        this.translateService = new TranslateService();
+        this.putFormLanguages();        
+        this.postService = new PostService();
         if (id === null){
-            this.postDao.save();
+            this.postService.save();
         }
         else{
             this.getTexts(id);
-            this.postDao.update(id);
+            this.postService.update(id);
         }
     }
+    
     async getTexts(id){
 
-        let promesa = await this.postDao.get(id);
+        let promesa = await this.postService.getById(id);
 
         document.querySelector('#title').value = promesa.title;
         document.querySelector('#content').value = promesa.content;
     }
-
-    getValuesToTranslate(){
-        let originalIndex = document.querySelector('#original').selectedIndex;
-        let originalOption = document.querySelector('#original').options;
-        
-        let translatedIndex = document.querySelector('#traducido').selectedIndex;
-        let translatedOption = document.querySelector('#traducido').options;
-        let lenguas = {
-            origen: originalOption[originalIndex].value,
-            destino: translatedOption[translatedIndex].value
-        }
-        return lenguas;
-    }
-
     
     async printTitle(){
-        let values = this.getValuesToTranslate();
+        let values = await this.postService.getValuesToTranslate();
 
         let origen = values.origen;
         let destino= values.destino;
@@ -54,7 +39,7 @@ export class PostFormController{
     }
     async printContent(){
     
-        let values = this.getValuesToTranslate();
+        let values = await this.postService.getValuesToTranslate();
 
         let origen = values.origen;
         let destino= values.destino;
@@ -64,23 +49,21 @@ export class PostFormController{
         document.querySelector('#contentT').value = await this.translateService.translate(origen, destino, texto);
         
     }
-    async getLanguages(){
+    async putFormLanguages(){
         let idiomas = await this.translateService.getLanguages();
         idiomas.forEach(idioma=>{
             let optionIdioma = document.createElement('option');
             optionIdioma.setAttribute('value',idioma.code);
             optionIdioma.text = idioma.name;
             document.querySelector('#traducido').options.add(optionIdioma);
-        })
-        idiomas.forEach(idioma=>{
-            let optionIdioma = document.createElement('option');
-            optionIdioma.setAttribute('value',idioma.code);
-            optionIdioma.text = idioma.name;
+            let optionIdioma2 = document.createElement('option');
+            optionIdioma2.setAttribute('value',idioma.code);
+            optionIdioma2.text = idioma.name;
             
-            document.querySelector('#original').options.add(optionIdioma);
-            
+            document.querySelector('#original').options.add(optionIdioma2);
         })
 
     }
+
 
 }

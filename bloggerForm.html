@@ -10,7 +10,7 @@
     <form action="" enctype="text/plain">
         <label for="title">title</label><input type="text" id="title" oninput="printTitle()">
         <label for="content">content</label><input type="textarea" id="content" oninput="printContent()">
-        <input type="button" id="botonPost">
+        <input type="button" id="botonPost" value=" ">
         <select name="original" id="original"></select>
         <select name="traducido" id="traducido"></select>
     </form>
@@ -36,6 +36,7 @@
         const url = new URL(document.location);
         const params = url.searchParams;
         const idPost = params.get('id');
+
         
         let postFormController = new PostFormController(idPost);
 
@@ -58,10 +59,6 @@
     
             
 
-        window.getLanguages = function(){
-            postFormController.getLanguages();
-        }
-        getLanguages();
 
 
     </script>
