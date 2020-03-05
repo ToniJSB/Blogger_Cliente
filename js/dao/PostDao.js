@@ -56,14 +56,14 @@ export class PostDao{
         return arrayPromises;
     }
 
-    async save(translates){
+    async save(/*translates */){
             let paramsFetch = {
                 method: 'POST',
                 body: JSON.stringify({
                     'kind': 'blogger#post',
                     'title': document.querySelector('#titleT').value, 
                     'content': document.querySelector('#contentT').value,
-                    'labels': translates
+//                    'labels': translates
                 }),
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('accesToken'),
@@ -76,7 +76,7 @@ export class PostDao{
             });
 
     }
-    async update(idPost, translates){
+    async update(idPost/*, translates*/){
         
         let paramsFetch = {
             method: 'PUT',
@@ -84,7 +84,7 @@ export class PostDao{
                 'kind': 'blogger#post',
                 'title': document.querySelector('#titleT').value, 
                 'content': document.querySelector('#contentT').value,
-                'labels': translates
+//                'labels': translates
 
             }),
             headers: {

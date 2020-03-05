@@ -17,9 +17,9 @@ export class PostService{
     async save(){
         document.querySelector('#botonPost').value = "save";
         document.querySelector('#botonPost').addEventListener('click',async function() {
-            let transalte = await this.getValuesToTranslate();
-            let label = ['1 '+transalte.origen + ' 2 '+transalte.destino];
-            this.postDao.save(label);
+//            let transalte = await this.getValuesToTranslate();
+//            let label = ['1 '+transalte.origen + ' 2 '+transalte.destino];
+            this.postDao.save(/*label */);
         })
     }
 
@@ -27,9 +27,9 @@ export class PostService{
         console.log(await this.getById(id))
         document.querySelector('#botonPost').value = "update";
         document.querySelector('#botonPost').addEventListener('click',async function() {
-            let transalte = await this.getValuesToTranslate();
-            let label = ['1 '+transalte.origen + ' 2 '+transalte.destino];
-            this.postDao.update(id,label);
+//            let transalte = await this.getValuesToTranslate();
+//            let label = ['1 '+transalte.origen + ' 2 '+transalte.destino];
+            this.postDao.update(id/*,label*/);
         })
     
     }
